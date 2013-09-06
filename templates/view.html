@@ -27,12 +27,12 @@ $def with (todos, form)
                 </thead>
         $for todo in todos:
         <tr class="success">
-        <td>$todo.title</td>
-        <td>
-        <form action="/del/$todo.id" method="post">
-        <input type="submit" value="Delete"/>
-        </form>
-        </td>
+            <td>$todo.title</td>
+            <td>
+                <form action="/del/$todo.id" method="post">
+                <input type="submit" value="Delete"/>
+                </form>
+            </td>
         </tr>       
     </table>  
         </div>
@@ -40,10 +40,14 @@ $def with (todos, form)
 </div>
 
 
-<form class="form-search">
-    <input class="input-medium search-query" type="text" /><a href="#" class="button button-circle button-action">press me</a>
-</form>    
+<form class="form-search" action="/add" method="post">
+    I Need To： <input class="input-medium search-query" type="text" name="todo_name"/>
+    <input type="submit" value="添加" class="button button-pill button-primary"/>
+</form>  
+
 
 <form action="" method="post">
 $:form.render()
 </form>
+
+

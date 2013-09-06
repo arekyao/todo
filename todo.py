@@ -7,7 +7,8 @@ import model
 urls = (
     '/', 'Index',
     '/view', 'View',
-    '/del/(\d+)', 'Delete'
+    '/del/(\d+)', 'Delete',
+    '/add', 'NewEntry'
 )
 
 
@@ -34,9 +35,7 @@ class View:
     def POST(self):
         """ Add new entry """
         form = self.form()
-        if not form.validates():
-            todos = model.get_todos()
-            return render.index(todos, form)
+        form.validates()
         model.new_todo(form.d.title)
         raise web.seeother('/view')
 
@@ -56,6 +55,15 @@ class Delete:
         model.del_todo(id)
         raise web.seeother('/view')
 
+
+class NewEntry:
+
+    def POST(self):
+        """ Add based str """
+        i=web.input()
+        str = i.todo_name
+        model.new_todo(str)
+        raise web.seeother('/view')
 
 app = web.application(urls, globals())
 
