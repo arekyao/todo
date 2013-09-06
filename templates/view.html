@@ -1,0 +1,49 @@
+$def with (todos, form)
+
+
+
+ <div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+        <ul class="nav nav-tabs">
+      <li >
+        <a href="/">介绍</a>
+      </li>
+      <li class="active"><a href="/view">详情</a></li>
+      <li><a href="#">...</a></li>
+    </ul>
+    
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            WTD
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                       
+                    </tr>
+                </thead>
+        $for todo in todos:
+        <tr class="success">
+        <td>$todo.title</td>
+        <td>
+        <form action="/del/$todo.id" method="post">
+        <input type="submit" value="Delete"/>
+        </form>
+        </td>
+        </tr>       
+    </table>  
+        </div>
+    </div>
+</div>
+
+
+<form class="form-search">
+    <input class="input-medium search-query" type="text" /><a href="#" class="button button-circle button-action">press me</a>
+</form>    
+
+<form action="" method="post">
+$:form.render()
+</form>
