@@ -1,5 +1,34 @@
-$def with (todos, form)
+$def with (todos)
 
+<script type="text/javascript">
+function showHint(str)
+{
+    var xmlhttp;
+    if (str.length==0)
+    { 
+        document.getElementById("txtHint").innerHTML="";
+        return;
+    }
+    if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+        }
+    }
+    xmlhttp.open("GET","/ajax?type=0&q="+str,true);
+    xmlhttp.send();
+}
+</script>
 
 
  <div class="container-fluid">
@@ -10,8 +39,14 @@ $def with (todos, form)
         <a href="/">介绍</a>
       </li>
       <li class="active"><a href="/view">详情</a></li>
-      <li><a href="#">...</a></li>
+      <li><a href="account">帐号</a></li>
     </ul>
+
+    <form class="form-search" action="/add" method="post">
+    I Need To： <input class="input-medium search-query" type="text" name="todo_name"/>
+    <input type="submit" value="Add" class="button button-pill button-primary"/>
+</form>  
+
     
             <table class="table table-hover">
                 <thead>
@@ -30,7 +65,7 @@ $def with (todos, form)
             <td>$todo.title</td>
             <td>
                 <form action="/del/$todo.id" method="post">
-                <input type="submit" value="Delete"/>
+                <input type="submit" value="Delete" class="button button-pill button-primary"/>
                 </form>
             </td>
         </tr>       
@@ -41,13 +76,12 @@ $def with (todos, form)
 
 
 <form class="form-search" action="/add" method="post">
-    I Need To： <input class="input-medium search-query" type="text" name="todo_name"/>
-    <input type="submit" value="添加" class="button button-pill button-primary"/>
-</form>  
+    <h4>I Need To： 
+    <input class="input-medium search-query" type="text" name="todo_name" onkeyup="showHint(this.value)"/>
+    <input type="submit" value="Add" class="button button-pill button-primary"/>
+</form> 
 
+<p>建议：<span id="txtHint"></span></p> 
 
-<form action="" method="post">
-$:form.render()
-</form>
 
 

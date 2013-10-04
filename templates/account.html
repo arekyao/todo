@@ -1,0 +1,75 @@
+$def with ()
+
+
+<script type="text/javascript">
+function showHint(str)
+{
+    var xmlhttp;
+    if (str.length==0)
+    { 
+        document.getElementById("txtHint").innerHTML="";
+        return;
+    }
+    if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+        }
+    }
+    xmlhttp.open("GET","/ajax?type=1&q="+str,true);
+    xmlhttp.send();
+}
+</script>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+        <ul class="nav nav-tabs">
+        <li ><a href="/">介绍</a></li>
+        <li><a href="/view">详情</a></li>
+        <li class="active"><a href="/account">帐号</a></li>
+        </ul>
+
+
+
+            <form id="signup" action="/user/add/" method="post">
+                <fieldset>
+                    <legend>请输入您的信息:</legend>
+                    
+                    <p>
+                        <label for="nickname">昵称:</label><br>
+                        <input type="text" class="text" name="nickname" id="nickname" maxlength="40" onkeyup="showHint(this.value)">
+                        <span id="validateUsername"></span>
+                    </p>
+                    <p>
+                        <label for="email">邮件地址:</label><br>
+                        <input type="text" class="text" name="email" id="email" maxlength="40">
+                        <span id="validateEmail"></span>
+                    </p>
+                    <p>
+                        <label for="passwd">密码:</label><br>
+                        <input type="password" class="text" name="passwd" id="passwd" maxlength="40">
+                    </p>
+                    <p>
+                        <input type="submit" value="注册"></input>
+                        <input type="reset" value="重来"></input>
+                    </p>
+                </fieldset>
+            </form>
+            <p>建议：<span id="txtHint"></span></p> 
+
+
+
+        </div>
+    </div>
+</div>

@@ -8,7 +8,10 @@ urls = (
     '/', 'Index',
     '/view', 'View',
     '/del/(\d+)', 'Delete',
-    '/add', 'NewEntry'
+    '/add', 'NewEntry',
+    '/ajax', 'ViewSuggest',
+    '/account', 'Account'
+
 )
 
 
@@ -17,27 +20,42 @@ render = web.template.render('templates', base='base')
 #render = web.template.render('templates')
 
 
+class ViewSuggest:
+    def GET(self):
+        type_ajax = int(web.input()['type'])
+        print type_ajax
+        query = web.input()['q'].strip()
+        print query
+
+        if type_ajax == 0:
+            return "no suggestion in this type"
+        elif type_ajax == 1:
+            if query[0]>='a' and query[0]<='z':
+                return "OK"
+            else:
+                return "invalid"
+
+        """ Show page """
+
+
+        return "no suggestion,pls"
+
+
+
+class Account:
+
+    def GET(self):
+        """ Show page """
+        return render.account()
+
+
 
 class View:
-
-    form = web.form.Form(
-        web.form.Textbox('title', web.form.notnull, 
-            description="I need to:"),
-        web.form.Button('Add todo'),
-    )
 
     def GET(self):
         """ Show page """
         todos = model.get_todos()
-        form = self.form()
-        return render.view(todos, form)
-
-    def POST(self):
-        """ Add new entry """
-        form = self.form()
-        form.validates()
-        model.new_todo(form.d.title)
-        raise web.seeother('/view')
+        return render.view(todos)
 
 
 class Index:
@@ -62,6 +80,8 @@ class NewEntry:
         """ Add based str """
         i=web.input()
         str = i.todo_name
+        if str == "":
+            raise web.seeother('/view')
         model.new_todo(str)
         raise web.seeother('/view')
 
